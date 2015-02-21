@@ -17,6 +17,8 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
+void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
+void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
 void ReadFile(string& filenumber, NodePtr& hdlist);
 void WriteFile(vector<string>& vectoutfile, NodePtr hdlist);
 Item GetFromList(NodePtr& hdlist);
@@ -107,12 +109,10 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					WriteFile(vectoutfile, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "e") {
-					//FindNoOfEntries();
-					;
+					FindNoOfEntries(vectoutfile, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "m") {
-					//FindMinEntry();
-					;
+					FindMinEntry(vectoutfile, hdlist);
 				}
 				else {
 					//SmoothList();
@@ -123,6 +123,44 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 		} while(comfileindex < vectcomfile.size());
 	return filenumber;
 }
+
+void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist) {
+    int minentry;
+	if(hdlist == NULL) {
+        minentry = NULL;
+	}
+	else {
+        minentry = hdlist->data;
+	}
+	while (hdlist != NULL) {
+		if(hdlist->data < minentry) {
+            minentry = hdlist->data;
+		}
+		hdlist = hdlist->next;
+	}
+	stringstream outss;
+	if(minentry == NULL) {
+        outss << "No entries, Therefore no minimum element" << endl;
+	}
+    else {
+        outss << "Minimum value: " << minentry << endl;
+    }
+    string out = outss.str();
+	vectoutfile.push_back(out);
+}
+
+void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist) {
+	int noofentries = 0;
+	while (hdlist != NULL) {
+		noofentries++;
+		hdlist = hdlist->next;
+	}
+	stringstream outss;
+    outss << "Number of elements in the list: " << noofentries << endl;
+    string out = outss.str();
+	vectoutfile.push_back(out);
+}
+
 
 void ReadFile(string& filenumber, NodePtr& hdlist) {
 	//Read data file name into a string
@@ -140,9 +178,9 @@ void ReadFile(string& filenumber, NodePtr& hdlist) {
 		exit(EXIT_FAILURE);
 	}
 
+    Item temp;
+
 	//Input items of data file into new list and close data file
-	int temp;
-    //cout << temp << endl;
 	while(datafile >> temp) {
 		AddToList(temp,hdlist);
 	}
