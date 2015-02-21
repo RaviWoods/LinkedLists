@@ -17,7 +17,7 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
-void DeleteElement(int number, NodePtr& hdlist) ;
+void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
 void ReadFile(string& filenumber, NodePtr& hdlist);
@@ -91,12 +91,12 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					ReadFile(filenumber, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "i") {
-                    int numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
+                    Item numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
 					//InsertElement();
 					;
 				}
 				else {
-					int numtodelete = atoi(vectcomfile[comfileindex + 1].c_str());
+					Item numtodelete = atoi(vectcomfile[comfileindex + 1].c_str());
 					DeleteElement(numtodelete, hdlist);
 				}
 				comfileindex += 2;
@@ -125,14 +125,37 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void DeleteElement(int number, NodePtr& hdlist) {
-
-	cout << number + 1 << endl;
-
+void DeleteElement(Item number, NodePtr& hdlist) {
+	bool found = false;
+	NodePtr oldPtr;
+	if(hdlist == NULL) {
+		return;
+	}
+	else if(hdlist->data == number) {
+		oldPtr = hdlist;
+		hdlist = hdlist->next;
+		delete oldPtr;
+	}
+	else {
+        NodePtr searchPtr = hdlist;
+		NodePtr lastPtr = hdlist;
+		while((searchPtr != NULL) && (!found)) {
+			if(searchPtr->data == number) {
+				found = true;
+				lastPtr->next = searchPtr->next;
+				delete searchPtr;
+				return;
+			}
+			else {
+				lastPtr = searchPtr;
+				searchPtr = searchPtr->next;
+			}
+		}
+	}
 }
 
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist) {
-    int minentry;
+    Item minentry;
 	if(hdlist == NULL) {
         minentry = NULL;
 	}
@@ -220,6 +243,9 @@ void AddToList(Item number, NodePtr& hdlist) {
 	newnode->next = hdlist;
 	hdlist = newnode;
 }
+
+
+
 
 
 
