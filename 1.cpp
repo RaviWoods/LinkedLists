@@ -17,6 +17,7 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
+void DeleteElement(int number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
 void ReadFile(string& filenumber, NodePtr& hdlist);
@@ -90,13 +91,13 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					ReadFile(filenumber, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "i") {
+                    int numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
 					//InsertElement();
 					;
 				}
 				else {
-
-					//DeleteElement();
-					;
+					int numtodelete = atoi(vectcomfile[comfileindex + 1].c_str());
+					DeleteElement(numtodelete, hdlist);
 				}
 				comfileindex += 2;
 			}
@@ -122,6 +123,12 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 			}
 		} while(comfileindex < vectcomfile.size());
 	return filenumber;
+}
+
+void DeleteElement(int number, NodePtr& hdlist) {
+
+	cout << number + 1 << endl;
+
 }
 
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist) {
