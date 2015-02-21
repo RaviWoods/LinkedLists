@@ -46,32 +46,14 @@ int main() {
 	}
 
 	commandfile.close();
-
 	//Write the output of the command file to an output file
     vector<string> vectoutfile;
 	string outfilenumber = RunComFileOps(vectcomfile, vectoutfile);
-
-	//Read outpur file name into a string
-	stringstream outfiless;
-	outfiless << "output_" << outfilenumber << ".txt";
-	string outfilename = outfiless.str();
-
-	//Open data file
-	ofstream outfile;
-	outfile.open(outfilename.c_str());
-
-	//If execution error, exit the program
-	if(!outfile.is_open()){
-		cout << "Couldn't open" << endl;
-		exit(EXIT_FAILURE);
-	}
-
-	//Input items of data file into new list and close data file
-
 	for (int index = 0; index < vectoutfile.size(); index++) {
-		outfile << vectoutfile[index] << endl ;
+        cout << "YES" << endl;
+		cout << vectoutfile[index] << endl;
 	}
-
+    return 0;
 }
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile) {
@@ -80,9 +62,10 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 		int comfileindex = 0;
 		NodePtr hdlist = new Node;
 		hdlist = NULL;
+		int x = 0;
         do {
-            cout << vectcomfile[comfileindex] << "\t" << comfileindex << endl;
-			if(vectcomfile[comfileindex] == "r" or vectcomfile[comfileindex] == "i" or vectcomfile[comfileindex] == "d") {
+            x++;
+			if(vectcomfile[comfileindex] == "r" or "w" or "i" or "d") {
 				if(vectcomfile[comfileindex] == "r") {
 					filenumber = vectcomfile[comfileindex + 1];
 					ReadFile(filenumber, hdlist);
@@ -96,7 +79,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					//DeleteElement();
 					;
 				}
-				comfileindex += 2;
+				comfileindex = comfileindex + 2;
 			}
 			else {
 				if(vectcomfile[comfileindex] == "s") {
@@ -118,9 +101,11 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					//SmoothList();
 					;
 				}
-				comfileindex++;
+				comfileindex = comfileindex + 1;
 			}
-		} while(comfileindex < vectcomfile.size());
+    } while(comfileindex < vectcomfile.size());
+    cout << x << endl;
+    cout << vectcomfile.size() << endl;
 	return filenumber;
 }
 
@@ -141,8 +126,8 @@ void ReadFile(string& filenumber, NodePtr& hdlist) {
 	}
 
 	//Input items of data file into new list and close data file
-	int temp;
-    //cout << temp << endl;
+	Item temp;
+
 	while(datafile >> temp) {
 		AddToList(temp,hdlist);
 	}
@@ -160,7 +145,7 @@ void WriteFile(vector<string>& vectoutfile, NodePtr hdlist) {
 }
 
 Item GetFromList(NodePtr& hdlist) {
-	int outdata;
+	Item outdata;
 	NodePtr tempPtr;
 	tempPtr = hdlist;
 	outdata = tempPtr->data;
@@ -168,7 +153,6 @@ Item GetFromList(NodePtr& hdlist) {
 	delete tempPtr;
 	return outdata;
 }
-
 void AddToList(Item number, NodePtr& hdlist) {
 	NodePtr newnode = new Node;
 	newnode->data = number;

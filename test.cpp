@@ -19,6 +19,10 @@ typedef Node* NodePtr;
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
 
 int main() {
+	string letter;
+	cin >> letter;
+	if(letter == "r") {
+		cout << "YES" << endl;
 	//HELLO
 	//Read command file name and open file
 	string commandfilename;
@@ -32,6 +36,9 @@ int main() {
 		cout << "Couldn't open" << endl;
 		exit(EXIT_FAILURE);
 	}
+	return 0;
+}
+ No newline at end of file
 
 	//If not, real file names into a structure and close the file
 	string cftemp;
@@ -73,7 +80,7 @@ int main() {
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile) {
     string filenumber;
 	bool ordered;
-	string x = "d";
+	string x = "e";
 	NodePtr hdlist = new Node;
 	hdlist = NULL;
     if(x == "r" or  "w" or "i" or "d") {
@@ -81,6 +88,9 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	}
     return filenumber;
 }
+
+
+
 
 
 
