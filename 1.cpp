@@ -116,13 +116,38 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					FindMinEntry(vectoutfile, hdlist);
 				}
 				else {
-					//SmoothList();
-					;
+					SmoothList();
 				}
 				comfileindex++;
 			}
 		} while(comfileindex < vectcomfile.size());
 	return filenumber;
+}
+
+void SmoothList(NodePtr& hdlist) {
+	bool insertion = false;
+	NodePtr newPtr, frontPtr, backPtr;
+	backPtr = hdlist;
+	frontPtr = hdlist->next;
+	Item tempmean;
+	while(frontPtr != NULL) {
+		if(abs(backPtr->data - frontPtr->data) > 5) {
+			tempmean = (backPtr->data + frontPtr->data / 2);
+			newPtr->data = round(tempmean);
+			newPtr->next = frontPtr;
+			backPtr->next = newPtr;
+			insertion = true;
+		}
+		backPtr = frontPtr;
+		frontPtr = frontPtr->next;
+	}
+	if(insertion) {
+		SmoothList(hdlist);
+		return;
+	}
+	else {
+		return;
+	}
 }
 
 void DeleteElement(Item number, NodePtr& hdlist) {
