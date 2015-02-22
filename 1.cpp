@@ -18,7 +18,7 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
-void SmoothList(NodePtr hdlist);
+void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
@@ -118,7 +118,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					FindMinEntry(vectoutfile, hdlist);
 				}
 				else {
-					SmoothList(hdlist);
+					SmoothList(vectoutfile, hdlist);
 				}
 				comfileindex++;
 			}
@@ -126,12 +126,17 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void SmoothList(NodePtr hdlist) {
+void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
+    bool insertion;
+    string end = "END";
 	while(!insertion) {
-		bool insertion = false;
+        WriteFile(vectoutfile, hdlist);
+		vectoutfile.push_back(end);
+		insertion = false;
 		NodePtr newPtr, frontPtr, backPtr;
 		backPtr = hdlist;
 		frontPtr = hdlist->next;
+		newPtr = new Node;
 		Item tempmean;
 		while(frontPtr != NULL) {
 			if(abs(backPtr->data - frontPtr->data) > 5) {
@@ -144,6 +149,7 @@ void SmoothList(NodePtr hdlist) {
 			backPtr = frontPtr;
 			frontPtr = frontPtr->next;
 		}
+
 	}
 }
 
