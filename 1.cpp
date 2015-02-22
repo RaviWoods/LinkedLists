@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <math.h>
 #include <sstream>
 
 using namespace std;
@@ -17,6 +18,7 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
+void SmoothList(NodePtr hdlist);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
@@ -116,7 +118,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					FindMinEntry(vectoutfile, hdlist);
 				}
 				else {
-					SmoothList();
+					SmoothList(hdlist);
 				}
 				comfileindex++;
 			}
@@ -124,29 +126,24 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void SmoothList(NodePtr& hdlist) {
-	bool insertion = false;
-	NodePtr newPtr, frontPtr, backPtr;
-	backPtr = hdlist;
-	frontPtr = hdlist->next;
-	Item tempmean;
-	while(frontPtr != NULL) {
-		if(abs(backPtr->data - frontPtr->data) > 5) {
-			tempmean = (backPtr->data + frontPtr->data / 2);
-			newPtr->data = round(tempmean);
-			newPtr->next = frontPtr;
-			backPtr->next = newPtr;
-			insertion = true;
+void SmoothList(NodePtr hdlist) {
+	while(!insertion) {
+		bool insertion = false;
+		NodePtr newPtr, frontPtr, backPtr;
+		backPtr = hdlist;
+		frontPtr = hdlist->next;
+		Item tempmean;
+		while(frontPtr != NULL) {
+			if(abs(backPtr->data - frontPtr->data) > 5) {
+				tempmean = (backPtr->data + frontPtr->data / 2);
+				newPtr->data = round(tempmean);
+				newPtr->next = frontPtr;
+				backPtr->next = newPtr;
+				insertion = true;
+			}
+			backPtr = frontPtr;
+			frontPtr = frontPtr->next;
 		}
-		backPtr = frontPtr;
-		frontPtr = frontPtr->next;
-	}
-	if(insertion) {
-		SmoothList(hdlist);
-		return;
-	}
-	else {
-		return;
 	}
 }
 
