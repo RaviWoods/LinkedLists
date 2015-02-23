@@ -130,8 +130,8 @@ void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
     bool insertion;
     string end = "END";
 	while(!insertion) {
-        WriteFile(vectoutfile, hdlist);
-		vectoutfile.push_back(end);
+			WriteFile(vectoutfile, hdlist);
+			vectoutfile.push_back(end);
 		insertion = false;
 		NodePtr newPtr, frontPtr, backPtr;
 		backPtr = hdlist;
@@ -142,13 +142,25 @@ void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
 			if(abs(backPtr->data - frontPtr->data) > 5) {
 				tempmean = (backPtr->data + frontPtr->data)/2;
                 cout << round(tempmean) << "\t" << tempmean << endl;
-                newPtr->data = round(tempmean);
-				newPtr->next = frontPtr;
+					newPtr->data = round(tempmean);
+					WriteFile(vectoutfile, hdlist);
+				vectoutfile.push_back(end);
+					newPtr->next = frontPtr;
+					WriteFile(vectoutfile, hdlist);
+				vectoutfile.push_back(end);
 				backPtr->next = newPtr;
+					WriteFile(vectoutfile, hdlist);
+					vectoutfile.push_back(end);
 				insertion = true;
 			}
+				WriteFile(vectoutfile, hdlist);
+				vectoutfile.push_back(end);
 			backPtr = frontPtr;
+				WriteFile(vectoutfile, hdlist);
+				vectoutfile.push_back(end);
 			frontPtr = frontPtr->next;
+				WriteFile(vectoutfile, hdlist);
+				vectoutfile.push_back(end);
 		}
 	}
 }
