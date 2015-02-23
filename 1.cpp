@@ -127,27 +127,40 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 }
 
 void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
+	WriteFile(vectoutfile, hdlist);
+	vectoutfile.push_back("BEGIN");
     bool insertion;
-    string end = "END";
-       WriteFile(vectoutfile, hdlist);
-	vectoutfile.push_back(end);
 	insertion = false;
-	NodePtr newPtr, frontPtr, backPtr;
+	NodePtr frontPtr, backPtr;
 	backPtr = hdlist;
 	frontPtr = hdlist->next;
-	newPtr = new Node;
-	double tempmean;
+	int tempsum;
 	while(frontPtr != NULL) {
+		NodePtr newPtr = new Node;
 		if(abs(backPtr->data - frontPtr->data) > 5) {
-			tempmean = (backPtr->data + frontPtr->data)/2;
-			cout << round(tempmean) << "\t" << tempmean << endl;
-			newPtr->data = round(tempmean);
+			tempsum = (backPtr->data + frontPtr->data);
+			//cout << round(tempmean) << "\t" << tempmean << endl;
+			if(tempsum%2 == 1) {
+                newPtr->data = (tempsum+1)/2;
+			}
+			else {
+                newPtr->data = tempsum/2;
+			}
 			newPtr->next = frontPtr;
 			backPtr->next = newPtr;
 			insertion = true;
 		}
 		backPtr = frontPtr;
 		frontPtr = frontPtr->next;
+		delete newPtr;
+		/*
+		NodePtr searchPtr;
+		searchPtr = hdlist;
+		while(searchPtr != NULL) {
+			cout << searchPtr << endl;
+			searchPtr = searchPtr->next;
+		}
+		*/
 	}
 	if(insertion) {
 		SmoothList(vectoutfile, hdlist);
