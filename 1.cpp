@@ -18,7 +18,7 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
-void SortList(NodePtr& hdlist);
+void SortList(vector<string>& vectoutfile, NodePtr& hdlist);
 void SmoothList(NodePtr hdlist);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
@@ -106,7 +106,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 			}
 			else {
 				if(vectcomfile[comfileindex] == "s") {
-					SortList(hdlist);
+					SortList(vectoutfile, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "w") {
 					WriteFile(vectoutfile, hdlist);
@@ -126,7 +126,9 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void SortList(NodePtr& hdlist) {
+void SortList(vector<string>& vectoutfile, NodePtr& hdlist) {
+    WriteFile(vectoutfile, hdlist);
+    vectoutfile.push_back("END");
     bool swapping = false;
 	NodePtr trailPtr, testPtr1, testPtr2;
 	trailPtr = hdlist;
@@ -151,7 +153,7 @@ void SortList(NodePtr& hdlist) {
 		testPtr2 = testPtr2->next;
 	}
 	if(swapping) {
-        SortList(hdlist);
+        SortList(vectoutfile, hdlist);
         return;
 	}
 	else {
@@ -160,6 +162,7 @@ void SortList(NodePtr& hdlist) {
 }
 
 void SmoothList(NodePtr hdlist) {
+
     bool insertion;
 	insertion = false;
 	NodePtr frontPtr, backPtr;
