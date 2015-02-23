@@ -127,13 +127,14 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 }
 
 void SortList(NodePtr& hdlist) {
+    bool swapping = false;
 	NodePtr trailPtr, testPtr1, testPtr2;
 	trailPtr = hdlist;
 	testPtr1 = hdlist;
 	testPtr2 = hdlist->next;
-	int x = 0;
 	while(testPtr2 != NULL) {
 		if(testPtr2->data < testPtr1->data) {
+            swapping = true;
 			if(testPtr1 == hdlist) {
 				hdlist->next = testPtr2->next;
 				testPtr2->next = hdlist;
@@ -148,10 +149,14 @@ void SortList(NodePtr& hdlist) {
 		trailPtr = testPtr1;
 		testPtr1 = testPtr2;
 		testPtr2 = testPtr2->next;
-		x++;
 	}
-	cout << x << endl;
-	return;
+	if(swapping) {
+        SortList(hdlist);
+        return;
+	}
+	else {
+	    return;
+	}
 }
 
 void SmoothList(NodePtr hdlist) {
