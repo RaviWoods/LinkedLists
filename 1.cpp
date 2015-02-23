@@ -18,7 +18,8 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
-void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist);
+void SortList(NodePtr& hdlist);
+void SmoothList(NodePtr hdlist);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
@@ -105,8 +106,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 			}
 			else {
 				if(vectcomfile[comfileindex] == "s") {
-					//SortFile();
-					;
+					SortList(hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "w") {
 					WriteFile(vectoutfile, hdlist);
@@ -118,7 +118,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					FindMinEntry(vectoutfile, hdlist);
 				}
 				else {
-					SmoothList(vectoutfile, hdlist);
+					SmoothList(hdlist);
 				}
 				comfileindex++;
 			}
@@ -126,9 +126,35 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
-	WriteFile(vectoutfile, hdlist);
-	vectoutfile.push_back("BEGIN");
+void SortList(NodePtr& hdlist) {
+	NodePtr trailPtr, testPtr1, testPtr2;
+	trailPtr = hdlist;
+	testPtr1 = hdlist;
+	testPtr2 = hdlist->next;
+	int x = 0;
+	while(testPtr2 != NULL) {
+		if(testPtr2->data < testPtr1->data) {
+			if(testPtr1 == hdlist) {
+				hdlist->next = testPtr2->next;
+				testPtr2->next = hdlist;
+				hdlist = testPtr2;
+			}
+			else {
+				trailPtr->next = testPtr2;
+				testPtr1->next = testPtr2->next;
+				testPtr2->next = testPtr1;
+			}
+		}
+		trailPtr = testPtr1;
+		testPtr1 = testPtr2;
+		testPtr2 = testPtr2->next;
+		x++;
+	}
+	cout << x << endl;
+	return;
+}
+
+void SmoothList(NodePtr hdlist) {
     bool insertion;
 	insertion = false;
 	NodePtr frontPtr, backPtr;
@@ -139,7 +165,6 @@ void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
 		NodePtr newPtr = new Node;
 		if(abs(backPtr->data - frontPtr->data) > 5) {
 			tempsum = (backPtr->data + frontPtr->data);
-			//cout << round(tempmean) << "\t" << tempmean << endl;
 			if(tempsum%2 == 1) {
                 newPtr->data = (tempsum+1)/2;
 			}
@@ -153,17 +178,9 @@ void SmoothList(vector<string>& vectoutfile, NodePtr& hdlist) {
 		backPtr = frontPtr;
 		frontPtr = frontPtr->next;
 		delete newPtr;
-		/*
-		NodePtr searchPtr;
-		searchPtr = hdlist;
-		while(searchPtr != NULL) {
-			cout << searchPtr << endl;
-			searchPtr = searchPtr->next;
-		}
-		*/
 	}
 	if(insertion) {
-		SmoothList(vectoutfile, hdlist);
+		SmoothList(hdlist);
 		return;
 	}
 	else {
