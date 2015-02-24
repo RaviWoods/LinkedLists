@@ -18,15 +18,16 @@ struct Node {
 typedef Node* NodePtr;
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
-void SortList(vector<string>& vectoutfile, NodePtr& hdlist);
+void SortList(NodePtr& hdlist);
 void SmoothList(NodePtr hdlist);
+void InsertElement(Item number, NodePtr& hdlist, bool ordered);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
 void ReadFile(string& filenumber, NodePtr& hdlist);
 void WriteFile(vector<string>& vectoutfile, NodePtr hdlist);
 Item GetFromList(NodePtr& hdlist);
-void AddToList(Item number, NodePtr& hdlist);
+void AddToHeadofList(Item number, NodePtr& hdlist);
 
 int main() {
 	//HELLO
@@ -82,7 +83,7 @@ int main() {
 
 string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile) {
         string filenumber;
-		bool ordered;
+		bool ordered = false;
 		int comfileindex = 0;
 		NodePtr hdlist = new Node;
 		hdlist = NULL;
@@ -95,8 +96,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 				}
 				else if(vectcomfile[comfileindex] == "i") {
                     Item numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
-					//InsertElement();
-					;
+					InsertElement(numtodelete, hdlist, ordered);
 				}
 				else {
 					Item numtodelete = atoi(vectcomfile[comfileindex + 1].c_str());
@@ -106,7 +106,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 			}
 			else {
 				if(vectcomfile[comfileindex] == "s") {
-					SortList(vectoutfile, hdlist);
+					SortList(hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "w") {
 					WriteFile(vectoutfile, hdlist);
@@ -119,6 +119,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 				}
 				else {
 					SmoothList(hdlist);
+					ordered = true;
 				}
 				comfileindex++;
 			}
@@ -126,9 +127,46 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 	return filenumber;
 }
 
-void SortList(vector<string>& vectoutfile, NodePtr& hdlist) {
-    WriteFile(vectoutfile, hdlist);
-    vectoutfile.push_back("END");
+void InsertElement(Item number, NodePtr& hdlist, bool ordered) {
+	if(!ordered) {
+		AddToHeadofList(number, hdlist);
+	}
+	else {
+		bool found = FALSE;
+		NodePtr searchPtr, lastPtr, newPtr;
+		
+		newPtr = new Node;
+		newPtr->data = number;
+		newPtr->next = NULL;
+		
+		if(hdlist = NULL) {
+			hdlist = newPtr;
+			return;
+		}
+		else if(hdlist->data >= number {
+			AddToHeadofList(number, hdlist);
+			return;
+		}
+		else {
+			searchPtr = hdlist;
+			lastPtr = hdlist;
+			while((searchPtr != NULL) && (!found)) {
+				if(searchPtr->data >= data) {
+					found = true;
+				}
+				else {
+					lastPtr = searchPtr;
+					searchPtr = searchPtr->next;
+				}
+			}
+			newPtr->next = searchPtr;
+			lastPtr->next = newPtr;
+		}
+		
+	}
+}
+
+void SortList(NodePtr& hdlist) {
     bool swapping = false;
 	NodePtr trailPtr, testPtr1, testPtr2;
 	trailPtr = hdlist;
@@ -153,7 +191,7 @@ void SortList(vector<string>& vectoutfile, NodePtr& hdlist) {
 		testPtr2 = testPtr2->next;
 	}
 	if(swapping) {
-        SortList(vectoutfile, hdlist);
+        SortList(hdlist);
         return;
 	}
 	else {
@@ -283,7 +321,7 @@ void ReadFile(string& filenumber, NodePtr& hdlist) {
 
 	//Input items of data file into new list and close data file
 	while(datafile >> temp) {
-		AddToList(temp,hdlist);
+		AddToHeadofList(temp,hdlist);
 	}
 
 	datafile.close();
@@ -308,7 +346,7 @@ Item GetFromList(NodePtr& hdlist) {
 	return outdata;
 }
 
-void AddToList(Item number, NodePtr& hdlist) {
+void AddToHeadofList(Item number, NodePtr& hdlist) {
 	NodePtr newnode = new Node;
 	newnode->data = number;
 	newnode->next = hdlist;
