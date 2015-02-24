@@ -96,7 +96,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 				}
 				else if(vectcomfile[comfileindex] == "i") {
                     Item numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
-					InsertElement(numtodelete, hdlist, ordered);
+					InsertElement(numtoinsert, hdlist, ordered);
 				}
 				else {
 					Item numtodelete = atoi(vectcomfile[comfileindex + 1].c_str());
@@ -107,6 +107,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 			else {
 				if(vectcomfile[comfileindex] == "s") {
 					SortList(hdlist);
+					ordered = true;
 				}
 				else if(vectcomfile[comfileindex] == "w") {
 					WriteFile(vectoutfile, hdlist);
@@ -132,18 +133,18 @@ void InsertElement(Item number, NodePtr& hdlist, bool ordered) {
 		AddToHeadofList(number, hdlist);
 	}
 	else {
-		bool found = FALSE;
+		bool found = false;
 		NodePtr searchPtr, lastPtr, newPtr;
-		
+
 		newPtr = new Node;
 		newPtr->data = number;
 		newPtr->next = NULL;
-		
-		if(hdlist = NULL) {
+
+		if(hdlist == NULL) {
 			hdlist = newPtr;
 			return;
 		}
-		else if(hdlist->data >= number {
+		else if(hdlist->data >= number) {
 			AddToHeadofList(number, hdlist);
 			return;
 		}
@@ -151,7 +152,7 @@ void InsertElement(Item number, NodePtr& hdlist, bool ordered) {
 			searchPtr = hdlist;
 			lastPtr = hdlist;
 			while((searchPtr != NULL) && (!found)) {
-				if(searchPtr->data >= data) {
+				if(searchPtr->data >= number) {
 					found = true;
 				}
 				else {
@@ -162,7 +163,7 @@ void InsertElement(Item number, NodePtr& hdlist, bool ordered) {
 			newPtr->next = searchPtr;
 			lastPtr->next = newPtr;
 		}
-		
+
 	}
 }
 
