@@ -17,14 +17,14 @@ struct Node {
 
 typedef Node* NodePtr;
 
-string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
+int RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile);
 void SortList(NodePtr& hdlist);
 void SmoothList(NodePtr hdlist);
 void InsertElement(Item number, NodePtr& hdlist, bool ordered);
 void DeleteElement(Item number, NodePtr& hdlist) ;
 void FindMinEntry(vector<string>& vectoutfile, NodePtr hdlist);
 void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist);
-void ReadFile(string& filenumber, NodePtr& hdlist);
+void ReadFile(int& filenumber, NodePtr& hdlist);
 void WriteFile(vector<string>& vectoutfile, NodePtr hdlist);
 Item GetFromList(NodePtr& hdlist);
 void AddToHeadofList(Item number, NodePtr& hdlist);
@@ -55,10 +55,14 @@ int main() {
 	commandfile.close();
 
 	//Write the output of the command file to an output file
-    vector<string> vectoutfile;
-	string outfilenumber = RunComFileOps(vectcomfile, vectoutfile);
+    	vector<string> vectoutfile;
+	int outfilenumber = RunComFileOps(vectcomfile, vectoutfile);
 
-	//Read outpur file name into a string
+	if(outfilenumber == NULL) {
+		return 0;
+	}
+
+	//Read output file name into a string
 	stringstream outfiless;
 	outfiless << "output_" << outfilenumber << ".txt";
 	string outfilename = outfiless.str();
@@ -78,20 +82,20 @@ int main() {
 	for (int index = 0; index < vectoutfile.size(); index++) {
 		outfile << vectoutfile[index] << endl ;
 	}
-
+	return 0;
 }
 
-string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile) {
-        string filenumber;
-		bool ordered = false;
-		int comfileindex = 0;
-		NodePtr hdlist = new Node;
-		hdlist = NULL;
-        do {
+int RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutfile) {
+        int filenumber = NULL;
+	bool ordered = false;
+	int comfileindex = 0;
+	NodePtr hdlist = new Node;
+	hdlist = NULL;
+        while(comfileindex < vectcomfile.size()) {
             cout << vectcomfile[comfileindex] << "\t" << comfileindex << endl;
 			if(vectcomfile[comfileindex] == "r" or vectcomfile[comfileindex] == "i" or vectcomfile[comfileindex] == "d") {
 				if(vectcomfile[comfileindex] == "r") {
-					filenumber = vectcomfile[comfileindex + 1];
+					filenumber = atoi(vectcomfile[comfileindex + 1].c_str());
 					ReadFile(filenumber, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "i") {
@@ -124,7 +128,8 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 				}
 				comfileindex++;
 			}
-		} while(comfileindex < vectcomfile.size());
+		}
+	cout << filenumber << endl;
 	return filenumber;
 }
 
@@ -168,7 +173,10 @@ void InsertElement(Item number, NodePtr& hdlist, bool ordered) {
 }
 
 void SortList(NodePtr& hdlist) {
-    bool swapping = false;
+	if(hdlist == NULL || hdlist->next == NULL) {
+		return;
+	}
+    	bool swapping = false;
 	NodePtr trailPtr, testPtr1, testPtr2;
 	trailPtr = hdlist;
 	testPtr1 = hdlist;
@@ -201,8 +209,10 @@ void SortList(NodePtr& hdlist) {
 }
 
 void SmoothList(NodePtr hdlist) {
-
-    bool insertion;
+	if(hdlist == NULL || hdlist->next == NULL) {
+		return;
+	}
+    	bool insertion;
 	insertion = false;
 	NodePtr frontPtr, backPtr;
 	backPtr = hdlist;
@@ -302,7 +312,7 @@ void FindNoOfEntries(vector<string>& vectoutfile, NodePtr hdlist) {
 }
 
 
-void ReadFile(string& filenumber, NodePtr& hdlist) {
+void ReadFile(int& filenumber, NodePtr& hdlist) {
 	//Read data file name into a string
 	stringstream datafiless;
 	datafiless << "data_" << filenumber << ".txt";
