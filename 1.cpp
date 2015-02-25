@@ -95,7 +95,7 @@ string RunComFileOps(const vector<string>& vectcomfile, vector<string>& vectoutf
 					ReadFile(filenumber, hdlist);
 				}
 				else if(vectcomfile[comfileindex] == "i") {
-                    Item numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
+                    			Item numtoinsert = atoi(vectcomfile[comfileindex + 1].c_str());
 					InsertElement(numtoinsert, hdlist, ordered);
 				}
 				else {
@@ -224,7 +224,7 @@ void SmoothList(NodePtr hdlist) {
 		}
 		backPtr = frontPtr;
 		frontPtr = frontPtr->next;
-		delete newPtr;
+		//delete newPtr;
 	}
 	if(insertion) {
 		SmoothList(hdlist);
@@ -331,19 +331,19 @@ void ReadFile(string& filenumber, NodePtr& hdlist) {
 void WriteFile(vector<string>& vectoutfile, NodePtr hdlist) {
 	while (hdlist != NULL) {
 		stringstream outss;
-        outss << GetFromList(hdlist) << endl;
-        string out = outss.str();
+        	outss << GetFromList(hdlist) << endl;
+        	string out = outss.str();
 		vectoutfile.push_back(out);
 	}
 }
 
 Item GetFromList(NodePtr& hdlist) {
 	int outdata;
-	NodePtr tempPtr;
+	NodePtr tempPtr = new Node;
 	tempPtr = hdlist;
 	outdata = tempPtr->data;
 	hdlist = tempPtr->next;
-	delete tempPtr;
+	//delete tempPtr;
 	return outdata;
 }
 
@@ -353,7 +353,6 @@ void AddToHeadofList(Item number, NodePtr& hdlist) {
 	newnode->next = hdlist;
 	hdlist = newnode;
 }
-
 
 
 
